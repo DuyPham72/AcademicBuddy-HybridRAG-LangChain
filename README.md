@@ -11,7 +11,7 @@ The system utilizes a Hybrid Retrieval (RAG II) architecture combining BM25 keyw
 2. **Fine-Tuned Embedding** – Uses a **custom embedding model** fine-tuned with **Unsloth & LoRA** for better retrieval.
 3. **Advanced Data Ingestion** – Preserves document structure using **Docling** and export as **Markdown format**.
 4. **Context-Aware Chat** – Implements **Query Transformation** to handle multi-turn follow-up questions effectively.
-5. **Privacy-First & Offline** – Fully containerized architecture using **Docker**; no user data leaves the local network.
+5. **Privacy-First & Offline** – Fully containerized architecture using **Docker** (no user data leaves the local network).
    
 ---
 
