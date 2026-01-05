@@ -1,0 +1,85 @@
+services:
+  llm:
+    image: ollama/ollama:latest
+    container_name: llm
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    networks:
+      - rag
+
+  chromadb:
+    image: chromadb/chroma:latest
+    container_name: vector_db
+    ports:
+      - "8001:8000"
+    volumes:
+      - chroma_data:/data
+    environment:
+      - IS_PERSISTENT=TRUE
+    networks:
+      - rag
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: backend
+    command: uvicorn src.main:app --host 0.0.0.0 --port 8000 --reload
+    volumes:
+      - ./backend:/app
+      - hf_cache:/root/.cache/huggingface
+      - docling_cache:/root/.cache/docling
+    ports:
+      - "8000:8000"
+    environment:
+      - CHROMA_HOST=chromadb
+      - CHROMA_PORT=8000
+      - OLLAMA_URL=http://llm:11434
+    depends_on:
+      - chromadb
+      - llm
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    networks:
+      - rag
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: frontend
+    command: streamlit run src/app.py --server.port=8501 --server.address=0.0.0.0
+    volumes:
+      - ./frontend:/app
+    ports:
+      - "8501:8501"
+    environment:
+      - BACKEND_URL=http://backend:8000
+    depends_on:
+      - backend
+    networks:
+      - rag
+
+volumes:
+  ollama_data:
+  chroma_data:
+  hf_cache:
+  docling_cache:
+
+networks:
+  rag:
+    driver: bridge

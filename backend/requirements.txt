@@ -1,0 +1,28 @@
+# --- Web Framework ---
+fastapi
+uvicorn
+python-multipart
+
+# --- LangChain & RAG ---
+langchain
+langchain-community
+langchain-chroma
+langchain-huggingface
+langchain-openai
+langchain-ollama
+langchain-text-splitters
+rank_bm25
+
+# --- Database ---
+chromadb
+
+# --- AI & Ingestion ---
+docling
+sentence-transformers
+flashrank
+
+# --- Utilities ---
+python-dotenv
+pydantic
+aiofiles
+httpx

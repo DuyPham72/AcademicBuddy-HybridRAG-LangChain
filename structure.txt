@@ -1,0 +1,54 @@
+academic-buddy/
+├── docker-compose.yml                  # Orchestrates Backend, Frontend, Chroma, Ollama
+├── init_model.sh                       # Application build script
+├── .gitignore
+├── README.md
+│
+├── fine_tune/                          # FINE TUNE SCRIPT FOR REASONING AND EMBEDDING MODEL
+|   ├── reasoning/
+|   |   └── granite4.ipynb              # Might be used in future improvement
+|   |
+│   └── embedding/
+│       └── granite4_embedding.ipynb    # Pushed to HuggingFace Hub 
+│
+├── backend/                            # THE CORE AI ENGINE
+│   ├── Dockerfile
+│   ├── requirements.txt
+│   │
+│   ├── config/                         # Configuration
+│   │   ├── __init__.py
+│   │   ├── settings.py                 # Env vars
+│   │   ├── prompts.yaml                # Prompt vars
+|   |   └── schemas.py
+│   │
+│   └── src/
+│       ├── __init__.py
+│       ├── main.py                     # FastAPI Entry Point
+|       ├── utils.py                    # Convert prompts.yaml into usable variables
+│       │
+│       ├── api/                        # API Routes (The "Controller" layer)
+│       │   ├── __init__.py
+│       │   ├── chat.py                 # Pipeline for chatbot workflow
+│       │   └── documents.py            # Pipeline for data ingestion
+│       │
+│       ├── chatbot/                    # LLM & RAG Logic
+│       │   ├── __init__.py
+│       │   ├── client.py               # Ollama setup
+│       │   ├── chains.py               # LangChain pipelines
+│       │   └── retriever.py            # Search & Reranking logic
+│       │
+│       └── ingestion/                  # File Processing
+│           ├── __init__.py
+│           ├── loader.py               # Docling logic
+│           ├── splitter.py             # Text splitting logic
+│           └── vector_db.py            # ChromaDB interactions
+│
+└── frontend/                           # THE USER INTERFACE
+    ├── Dockerfile
+    ├── requirements.txt
+    └── src/
+        ├── app.py                      # Main UI Entry point
+        ├── api_client.py               # Wrapper for calling Backend API
+        └── components/                 # Reusable UI widgets (Chat bubbles, Sidebar)
+            ├── chat_interface.py
+            └── file_manager.py

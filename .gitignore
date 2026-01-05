@@ -1,0 +1,40 @@
+# --- Python Basics ---
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# --- Environment Variables ---
+.env
+.env.local
+
+# --- IDE Settings ---
+.vscode/
+.idea/
+*.swp
+
+# --- Project Specific Storage ---
+chroma_db/
+chroma_data/
+
+# --- Ollama model weights ---
+ollama_data/
+
+# --- Temp files ---
+temp_*
+*.pdf
+*.docx
+
+# --- Docling / Torch Caches ---
+.cache/
+.docling_cache/
+
+# --- OS Specific ---
+.DS_Store
+Thumbs.db
