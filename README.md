@@ -7,7 +7,7 @@ The system utilizes a Hybrid Retrieval (RAG II) architecture combining BM25 keyw
 
 ## Project Features
 
-1. **Hybrid RAG Architecture** – Combines **BM25** (Keyword) and **Vector Search** (Semantic) with **Reranking** for better retrieval accuracy.
+1. **Hybrid RAG** – Combines **BM25** (Keyword) and **Vector Search** (Semantic) with **Reranking** for better retrieval accuracy.
 2. **Fine-Tuned Embedding** – Uses a **custom embedding model** fine-tuned with **Unsloth & LoRA** for domain-specific academic reasoning.
 3. **Advanced Data Ingestion** – Preserves document structure using **Docling** and export as **Markdown format**.
 4. **Context-Aware Chat** – Implements **Query Transformation** logic to handle multi-turn follow-up questions effectively.
