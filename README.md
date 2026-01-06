@@ -94,10 +94,15 @@ To create a high-quality training dataset, I engineered a synthetic corpus combi
 * **Code Logic:** `glaiveai/glaive-code-assistant-v3`
 * **Domain Knowledge:** Curated Computer Science textbook structures.
 
-### 2. Fine-Tuning Performance
-The model was trained using **Matryoshka Representation Learning (MRL)**. Below is the direct evaluation log comparing the **Base Model** vs. **Fine-Tuned Model** on `NDCG@10`.
+### 2. Metric Selection
+I optimized for **NDCG@10** rather than simple accuracy because LLMs heavily prioritize information at the start of the context window.
+* **The Goal:** Ensure the most relevant citations appear at **Rank #1–3** rather than being buried at Rank #10.
+* **The Impact:** By prioritizing early-rank relevance, the retrieval layer is structured to **minimize hallucination**.
 
-**Key Observation:** The fine-tuned model at **64 dimensions** (15.78% gain) outperforms the base model at full **768 dimensions**, allowing for **12x faster search** with superior accuracy.
+### 3. Fine-Tuning Performance
+Trained using **Matryoshka Representation Learning (MRL)**, the model achieves a massive efficiency breakthrough.
+
+**Key Result:** The fine-tuned model at **64 dimensions** (NDCG 0.6837) outperforms the base model at full **768 dimensions** (NDCG 0.6224). This allows for a **12x reduction in vector storage and search latency** while actually *improving* retrieval quality.
 
 ```text
 Impact Analysis: Base vs Fine-Tuned (NDCG@10)
@@ -110,7 +115,6 @@ Dimension  Base       Fine-Tuned   Diff       % Gain
 128        0.6036     0.6959       +0.0923     +15.29%   
 64         0.5905     0.6837       +0.0932     +15.78%   
 ======================================================================
-```
 
 ---
 
