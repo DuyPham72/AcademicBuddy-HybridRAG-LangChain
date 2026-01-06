@@ -103,7 +103,7 @@ I optimized for **NDCG@10** rather than simple accuracy because LLMs heavily pri
 Trained using **Matryoshka Representation Learning (MRL)**, the model achieves a massive efficiency breakthrough.
 
 Key Result:
-* The fine-tuned model at **64 dimensions** (NDCG 0.681) outperforms the base model at full **768 dimensions** (NDCG 0.623).
+* The fine-tuned model at **64 dimensions** outperforms the base model at full **768 dimensions**.
 * Allow a **12x reduction in vector storage and search latency** while actually **improving retrieval quality**.
 
 <p align="center">
