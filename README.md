@@ -86,8 +86,9 @@ academic-buddy/
 
 ---
 
-## Embedding Model
+## Embedding Model Engineering
 
-- Fine-Tuned base on synthetic dataset build from [
-OpenMathInstruct](https://huggingface.co/datasets/nvidia/OpenMathInstruct-1), [glaive-code-assistant](https://huggingface.co/datasets/glaiveai/glaive-code-assistant-v3), and my CSE books.
-- 
+- **Synthetic Dataset**: Fine-tuned on a custom high-quality dataset generated from [OpenMathInstruct-1](https://huggingface.co/datasets/nvidia/OpenMathInstruct-1), [Glaive Code Assistant v3](https://huggingface.co/datasets/glaiveai/glaive-code-assistant-v3), and domain-specific Computer Science textbooks.
+- **Matryoshka Representation Learning (MRL)**: Trained with MRL to support adaptive embedding sizes. This allows the model to truncate embeddings from **768d down to 64d** while retaining semantic performance.
+- **Efficiency Breakthrough**: The fine-tuned model at **64 dimensions** (NDCG: 0.6837) outperforms the original base model at full **768 dimensions** (NDCG: 0.6224), enabling a **12x reduction in storage and search costs** with superior accuracy.
+- **Performance Gains**: Achieved a consistent **~11-16% improvement in NDCG@10** across all dimensions, significantly reducing the "lexical gap" for complex academic queries.
