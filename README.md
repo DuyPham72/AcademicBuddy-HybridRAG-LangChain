@@ -102,20 +102,14 @@ I optimized for **NDCG@10** rather than simple accuracy because LLMs heavily pri
 ### 3. Fine-Tuning Performance
 Trained using **Matryoshka Representation Learning (MRL)**, the model achieves a massive efficiency breakthrough.
 
-**Key Result:** The fine-tuned model at **64 dimensions** (NDCG 0.6837) outperforms the base model at full **768 dimensions** (NDCG 0.6224). This allows for a **12x reduction in vector storage and search latency** while actually *improving* retrieval quality.
+Key Result:
+* The fine-tuned model at **64 dimensions** (NDCG 0.681) outperforms the base model at full **768 dimensions** (NDCG 0.623).
+* Allow a **12x reduction in vector storage and search latency** while actually **improving retrieval quality**.
 
-```text
-Impact Analysis: Base vs Fine-Tuned (NDCG@10)
-======================================================================
-Dimension  Base       Fine-Tuned   Diff       % Gain    
-----------------------------------------------------------------------
-768        0.6224     0.6911       +0.0687     +11.04%   
-512        0.6217     0.6932       +0.0715     +11.50%   
-256        0.6163     0.6954       +0.0791     +12.84%   
-128        0.6036     0.6959       +0.0923     +15.29%   
-64         0.5905     0.6837       +0.0932     +15.78%   
-======================================================================
-```
+<p align="center">
+  <img src="demos/embedding_benchmark.png"><br/>
+  <i>Embedding Benchmark.</i>
+</p>
 
 ---
 
