@@ -1,2 +1,122 @@
-# AcademicBuddy-HybridRAG-LangChain
-🎓 A local, offline academic assistant built with FastAPI and LangChain, utilizing Hybrid RAG (BM25 + Vector) to help students instantly query, analyze, and master their lecture notes and course materials.
+# AI Study Partner with Hybrid RAG & Fine-Tuned Embedding Models
+A **local academic assistant** implemented with **FastAPI, LangChain, and Docker**, designed to help students **master lecture notes and course materials**.
+
+The system utilizes a Hybrid Retrieval (RAG II) architecture combining BM25 keyword search and Vector similarity with Flashrank Reranking to ensure high-precision answers for complex academic queries.
+
+---
+
+## Project Features
+
+1. **Hybrid RAG** – Combines **BM25** (Keyword) and **Vector Search** (Semantic) with **Reranking** to improve answer.
+2. **Fine-Tuned Embedding** – Uses a **custom embedding model** fine-tuned with **Unsloth & LoRA** for better retrieval.
+3. **Advanced Data Ingestion** – Preserves document structure using **Docling** and export as **Markdown format**.
+4. **Context-Aware Chat** – Implements **Query Transformation** to handle multi-turn follow-up questions effectively.
+5. **Privacy-First & Offline** – Fully containerized architecture using **Docker** (no user data leaves the local network).
+   
+---
+
+## Project Structure
+```
+academic-buddy/
+├── docker-compose.yml                  # Orchestrates Backend, Frontend, Chroma, Ollama
+├── init_model.sh                       # Application build script
+├── .gitignore
+├── README.md
+│
+├── fine_tune/                          # FINE TUNE SCRIPT FOR REASONING AND EMBEDDING MODEL
+|   ├── reasoning/
+|   |   └── granite4.ipynb              # Might be used in future improvement
+|   |
+│   └── embedding/
+│       └── granite4_embedding.ipynb    # Pushed to HuggingFace Hub 
+│
+├── backend/                            # THE CORE AI ENGINE
+│   ├── Dockerfile
+│   ├── requirements.txt
+│   │
+│   ├── config/                         # Configuration
+│   │   ├── __init__.py
+│   │   ├── settings.py                 # Env vars
+│   │   ├── prompts.yaml                # Prompt vars
+|   |   └── schemas.py
+│   │
+│   └── src/
+│       ├── __init__.py
+│       ├── main.py                     # FastAPI Entry Point
+|       ├── utils.py                    # Convert prompts.yaml into usable variables
+│       │
+│       ├── api/                        # API Routes (The "Controller" layer)
+│       │   ├── __init__.py
+│       │   ├── chat.py                 # Pipeline for chatbot workflow
+│       │   └── documents.py            # Pipeline for data ingestion
+│       │
+│       ├── chatbot/                    # LLM & RAG Logic
+│       │   ├── __init__.py
+│       │   ├── client.py               # Ollama setup
+│       │   ├── chains.py               # LangChain pipelines
+│       │   └── retriever.py            # Search & Reranking logic
+│       │
+│       └── ingestion/                  # File Processing
+│           ├── __init__.py
+│           ├── loader.py               # Docling logic
+│           ├── splitter.py             # Text splitting logic
+│           └── vector_db.py            # ChromaDB interactions
+│
+└── frontend/                           # THE USER INTERFACE
+    ├── Dockerfile
+    ├── requirements.txt
+    └── src/
+        ├── app.py                      # Main UI Entry point
+        ├── api_client.py               # Wrapper for calling Backend API
+        └── components/                 # Reusable UI widgets (Chat bubbles, Sidebar)
+            ├── chat_interface.py
+            └── file_manager.py
+```
+
+---
+
+## LLM Used
+
+| Models                                         | Functions              | Source     |
+|------------------------------------------------|:----------------------:|:----------:|
+| granite-4.0-micro (base)                       | Reasoning              |[Hugging Face](https://huggingface.co/ibm-granite/granite-4.0-micro)|
+| granite-embedding-english-r2 (Fine-Tuned)      | Embedding              |[Hugging Face](https://huggingface.co/shatonix/granite-embedding-math-cs)|
+
+- **Prompt Engineering**: Follow the guideline from [Granite Language Cookbook](https://www.ibm.com/granite/docs/use-cases/prompt-engineering)
+
+---
+
+## Embedding Model Engineering
+
+### 1. Synthetic Data Strategy
+To create a high-quality training dataset, I engineered a synthetic corpus combining:
+* **Mathematical Reasoning:** `nvidia/OpenMathInstruct-1`
+* **Code Logic:** `glaiveai/glaive-code-assistant-v3`
+* **Domain Knowledge:** Curated Computer Science textbook structures.
+
+### 2. Metric Selection
+I optimized for **NDCG@10** rather than simple accuracy because LLMs heavily prioritize information at the start of the context window.
+* **The Goal:** Ensure the most relevant citations appear at **Rank #1–3** rather than being buried at Rank #10.
+* **The Impact:** By prioritizing early-rank relevance, the retrieval layer is structured to **minimize hallucination**.
+
+### 3. Fine-Tuning Performance
+Trained using **Matryoshka Representation Learning (MRL)**, the model achieves a massive efficiency breakthrough.
+
+**Key Result:** The fine-tuned model at **64 dimensions** (NDCG 0.6837) outperforms the base model at full **768 dimensions** (NDCG 0.6224). This allows for a **12x reduction in vector storage and search latency** while actually *improving* retrieval quality.
+
+```text
+Impact Analysis: Base vs Fine-Tuned (NDCG@10)
+======================================================================
+Dimension  Base       Fine-Tuned   Diff       % Gain    
+----------------------------------------------------------------------
+768        0.6224     0.6911       +0.0687     +11.04%   
+512        0.6217     0.6932       +0.0715     +11.50%   
+256        0.6163     0.6954       +0.0791     +12.84%   
+128        0.6036     0.6959       +0.0923     +15.29%   
+64         0.5905     0.6837       +0.0932     +15.78%   
+======================================================================
+```
+
+---
+
+
