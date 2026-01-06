@@ -90,8 +90,8 @@ academic-buddy/
 
 ### 1. Synthetic Data Strategy
 To create a high-quality training dataset, I engineered a synthetic corpus combining:
-* **Mathematical Reasoning:** `nvidia/OpenMathInstruct-1`
-* **Code Logic:** `glaiveai/glaive-code-assistant-v3`
+* **Mathematical Reasoning:** [nvidia/OpenMathInstruct-1](https://huggingface.co/datasets/nvidia/OpenMathInstruct-1)
+* **Code Logic:** [glaiveai/glaive-code-assistant-v3](https://huggingface.co/datasets/glaiveai/glaive-code-assistant-v3)
 * **Domain Knowledge:** Curated Computer Science textbook structures.
 
 ### 2. Metric Selection
