@@ -108,7 +108,7 @@ Key Result:
 
 <p align="center">
   <img src="demos/embedding_benchmark.png"><br/>
-  <i>Embedding Benchmark.</i>
+  <i>Embedding Benchmark</i>
 </p>
 
 ---
@@ -131,89 +131,10 @@ Key Result:
 * **Hybrid Retriever** – Combines **BM25** (keyword) and **Vector Search** (semantic) to maximize retrieval coverage.
 * **Flashrank** – Cross-encoder that re-ranks documents to ensure high-precision context for the LLM.
 
-```mermaid
-graph LR
-    %% =========================
-    %% USER & FRONTEND
-    %% =========================
-    User((User))
-    UI[Streamlit UI]:::frontend
-
-    %% =========================
-    %% BACKEND
-    %% =========================
-    API[FastAPI Backend]:::backend
-
-    %% =========================
-    %% INGESTION PIPELINE
-    %% =========================
-    subgraph INGEST["Ingestion Pipeline"]
-        direction LR
-        Docling["Docling Parser"]:::ingest
-        Split["Chunking / Splitters"]:::ingest
-        EmbedDoc["Embedding Model<br/>(Fine-tuned)"]:::ai
-    end
-
-    %% =========================
-    %% RETRIEVAL PIPELINE
-    %% =========================
-    subgraph RAG["RAG Pipeline"]
-        direction LR
-        Rewrite["Query Rewriter"]:::logic
-        EmbedQuery["Query Embedding"]:::ai
-        Hybrid["Hybrid Retriever<br/>(BM25 + Vector)"]:::logic
-        Rerank["Flashrank Reranker"]:::logic
-    end
-
-    %% =========================
-    %% STORAGE & MODELS
-    %% =========================
-    VectorDB[(ChromaDB<br/>Vector Index)]:::database
-    KeywordDB[(BM25 / Keyword Index)]:::database
-    LLM["Ollama Inference"]:::ai
-
-    %% =========================
-    %% USER FLOW
-    %% =========================
-    User -->|Upload PDF| UI
-    User -->|Ask Question| UI
-    UI --> API
-
-    %% =========================
-    %% INGESTION FLOW
-    %% =========================
-    API --> Docling
-    Docling --> Split
-    Split --> EmbedDoc
-    EmbedDoc --> VectorDB
-    Split --> KeywordDB
-
-    %% =========================
-    %% RETRIEVAL FLOW
-    %% =========================
-    API --> Rewrite
-    Rewrite --> EmbedQuery
-    Rewrite --> Hybrid
-
-    EmbedQuery --> VectorDB
-    Hybrid --> VectorDB
-    Hybrid --> KeywordDB
-    Hybrid --> Rerank
-    Rerank --> LLM
-    LLM -->|Answer| User
-
-    %% =========================
-    %% COLOR DEFINITIONS
-    %% =========================
-    classDef frontend fill:#0c2d48,stroke:#00bcd4,stroke-width:2px,color:#ffffff
-    classDef backend fill:#143601,stroke:#76ff03,stroke-width:2px,color:#ffffff
-    classDef ingest fill:#4a3b00,stroke:#ffb300,stroke-width:2px,color:#ffffff
-    classDef logic fill:#1f1f1f,stroke:#9e9e9e,stroke-width:2px,color:#ffffff
-    classDef database fill:#240046,stroke:#e040fb,stroke-width:2px,color:#ffffff
-    classDef ai fill:#3b0000,stroke:#ff5252,stroke-width:2px,color:#ffffff
-    classDef anchor fill:none,stroke:none
-
-```
+<p align="center">
+  <img src="demos/system_architecture.png"><br/>
+  <i>System Workflow</i>
+</p>
 
 ---
 
