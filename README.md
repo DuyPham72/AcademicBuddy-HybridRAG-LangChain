@@ -89,13 +89,13 @@ academic-buddy/
 ## Embedding Model Engineering
 
 ### 1. Synthetic Data Strategy
-To create a high-quality training dataset, I engineered a synthetic corpus combining:
+The high-quality training dataset is a synthetic corpus combining:
 * **Mathematical Reasoning:** [nvidia/OpenMathInstruct-1](https://huggingface.co/datasets/nvidia/OpenMathInstruct-1)
 * **Code Logic:** [glaiveai/glaive-code-assistant-v3](https://huggingface.co/datasets/glaiveai/glaive-code-assistant-v3)
 * **Domain Knowledge:** Curated Computer Science textbook structures.
 
 ### 2. Metric Selection
-I optimized for **NDCG@10** rather than simple accuracy because LLMs heavily prioritize information at the start of the context window.
+Optimized for **NDCG@10** rather than simple accuracy because LLMs heavily prioritize information at the start of the context window.
 * **The Goal:** Ensure the most relevant citations appear at **Rank #1–3** rather than being buried at Rank #10.
 * **The Impact:** By prioritizing early-rank relevance, the retrieval layer is structured to **minimize hallucination**.
 
