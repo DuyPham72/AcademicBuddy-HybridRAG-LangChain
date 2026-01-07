@@ -6,7 +6,7 @@ from src.api import chat, documents
 from config.settings import settings
 
 @asynccontextmanager
-async def lifespan():
+async def lifespan(app):
     """
     Lifespan context manager that ensures the LLM model is available 
     before the application starts accepting requests.

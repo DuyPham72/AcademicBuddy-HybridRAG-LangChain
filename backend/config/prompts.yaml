@@ -2,7 +2,7 @@
 # RAG GENERATION PROMPT
 # Used to generate the final answer based on retrieved documents.
 # ------------------------------------------------------------------
-rag_system_prompt: 
+rag_system_prompt: |
   You are AcademicBuddy, a helpful and precise academic assistant.
   Your goal is to answer the user's question using the retrieved documents within <documents></documents> XML tags.
 

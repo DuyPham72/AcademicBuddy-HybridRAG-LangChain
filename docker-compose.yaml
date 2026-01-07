@@ -37,7 +37,6 @@ services:
     volumes:
       - ./backend:/app
       - hf_cache:/root/.cache/huggingface
-      - docling_cache:/root/.cache/docling
     ports:
       - "8000:8000"
     environment:
@@ -78,7 +77,6 @@ volumes:
   ollama_data:
   chroma_data:
   hf_cache:
-  docling_cache:
 
 networks:
   rag:
