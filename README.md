@@ -1,7 +1,7 @@
-# AI Study Partner with Hybrid RAG & Fine-Tuned Embedding Models
-A **local academic assistant** implemented with **FastAPI, LangChain, and Docker**, designed to help students **master lecture notes and course materials**.
+# AcademicBuddy: Turn Lecture Notes into an Intelligent Tutor
+**Stop searching, start mastering**. Turn your PDF pile into an intelligent tutor. Ask questions instead of scrolling, and receive precise answers with source citations instantly.
 
-The system utilizes a Hybrid Retrieval (RAG II) architecture combining BM25 keyword search and Vector similarity with Flashrank Reranking to ensure high-precision answers for complex academic queries.
+**Offline & Private**. Your data never leaves your laptop. Get instant, clear explanations from your study materials without needing an internet connection or cloud services.
 
 ---
 
@@ -128,8 +128,8 @@ Key Result:
 ### Retrieval & Storage (RAG)
 * **Docling** – Advanced document parsing engine that preserves PDF structure (headers, tables) during ingestion.
 * **ChromaDB** – Local vector database for storing and querying semantic embeddings of course materials.
-* **Hybrid Retriever** – Combines **BM25** (keyword match) and **Vector Search** (semantic match) to maximize retrieval coverage.
-* **Flashrank** – Cross-encoder reranking model that re-scores retrieved documents to ensure high-precision context is sent to the LLM.
+* **Hybrid Retriever** – Combines **BM25** (keyword) and **Vector Search** (semantic) to maximize retrieval coverage.
+* **Flashrank** – Cross-encoder that re-ranks documents to ensure high-precision context for the LLM.
 
 ```mermaid
 graph LR
@@ -172,11 +172,6 @@ graph LR
     KeywordDB[(BM25 / Keyword Index)]:::database
     LLM["Ollama Inference"]:::ai
 
-    %% === RIGHT-PADDING SPACERS ===
-    Spacer1[ ]:::spacer
-    Spacer2[ ]:::spacer
-    Spacer3[ ]:::spacer
-
     %% =========================
     %% USER FLOW
     %% =========================
@@ -216,5 +211,12 @@ graph LR
     classDef logic fill:#1f1f1f,stroke:#9e9e9e,stroke-width:2px,color:#ffffff
     classDef database fill:#240046,stroke:#e040fb,stroke-width:2px,color:#ffffff
     classDef ai fill:#3b0000,stroke:#ff5252,stroke-width:2px,color:#ffffff
-    classDef spacer fill:none,stroke:none
+    classDef anchor fill:none,stroke:none
+
 ```
+
+---
+
+## Usage
+
+
