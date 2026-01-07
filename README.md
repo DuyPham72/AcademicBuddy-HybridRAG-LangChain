@@ -116,14 +116,14 @@ Key Result:
 ## System Architecture
 
 ### Infrastructure & UI
-* **Docker Compose** – Container orchestration ensuring a reproducible, fully offline-capable environment for all services.
+* **Docker Compose** – Container orchestration ensuring a reproducible, fully offline-capable environment.
 * **Streamlit** – Interactive frontend UI for file uploads, chat interface, and rendering source citations.
 * **FastAPI** – High-performance async backend API handling request routing and session management.
 
 ### AI Engine & Logic
 * **LangChain** – Application logic framework managing RAG chains, chat history, and prompt engineering.
 * **Ollama** – Local inference server hosting the quantized **Granite 4.0** model for secure, offline reasoning.
-* **Granite Models** – Fine-tuned models utilized for both **Reasoning** (answering questions) and **Embedding** (vectorizing data).
+* **Granite Models** – Fine-tuned models utilized for both **Reasoning** and **Embedding**.
 
 ### Retrieval & Storage (RAG)
 * **Docling** – Advanced document parsing engine that preserves PDF structure (headers, tables) during ingestion.
@@ -147,16 +147,18 @@ graph LR
     %% =========================
     %% INGESTION PIPELINE
     %% =========================
-    subgraph INGEST["Ingestion Pipeline (Offline / Async)"]
+    subgraph INGEST["Ingestion Pipeline"]
+        direction LR
         Docling["Docling Parser"]:::ingest
         Split["Chunking / Splitters"]:::ingest
-        EmbedDoc["Embedding Model<br/>(Fine-tuned Granite)"]:::ai
+        EmbedDoc["Embedding Model<br/>(Fine-tuned)"]:::ai
     end
 
     %% =========================
     %% RETRIEVAL PIPELINE
     %% =========================
-    subgraph RAG["RAG Pipeline (Online / Query-time)"]
+    subgraph RAG["RAG Pipeline"]
+        direction LR
         Rewrite["Query Rewriter"]:::logic
         EmbedQuery["Query Embedding"]:::ai
         Hybrid["Hybrid Retriever<br/>(BM25 + Vector)"]:::logic
@@ -168,7 +170,12 @@ graph LR
     %% =========================
     VectorDB[(ChromaDB<br/>Vector Index)]:::database
     KeywordDB[(BM25 / Keyword Index)]:::database
-    LLM["Ollama Inference<br/>(Granite 4.0 GGUF)"]:::ai
+    LLM["Ollama Inference"]:::ai
+
+    %% === RIGHT-PADDING SPACERS ===
+    Spacer1[ ]:::spacer
+    Spacer2[ ]:::spacer
+    Spacer3[ ]:::spacer
 
     %% =========================
     %% USER FLOW
@@ -198,11 +205,7 @@ graph LR
     Hybrid --> KeywordDB
     Hybrid --> Rerank
     Rerank --> LLM
-
-    %% =========================
-    %% GENERATION FLOW
-    %% =========================
-    LLM --> API
+    LLM -->|Answer| User
 
     %% =========================
     %% COLOR DEFINITIONS
@@ -213,4 +216,5 @@ graph LR
     classDef logic fill:#1f1f1f,stroke:#9e9e9e,stroke-width:2px,color:#ffffff
     classDef database fill:#240046,stroke:#e040fb,stroke-width:2px,color:#ffffff
     classDef ai fill:#3b0000,stroke:#ff5252,stroke-width:2px,color:#ffffff
+    classDef spacer fill:none,stroke:none
 ```
