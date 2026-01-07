@@ -157,4 +157,12 @@ Key Result:
 ---
 
 ## Demos
+<p align="center">
+  <img src="demos/demo1.gif"><br/>
+  <i>Usage Workflow</i>
+</p>
 
+<p align="center">
+  <img src="demos/demo2.gif"><br/>
+  <i>Chat with Selected Files</i>
+</p>
