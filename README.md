@@ -113,4 +113,104 @@ Key Result:
 
 ---
 
+## System Architecture
 
+### Infrastructure & UI
+* **Docker Compose** – Container orchestration ensuring a reproducible, fully offline-capable environment for all services.
+* **Streamlit** – Interactive frontend UI for file uploads, chat interface, and rendering source citations.
+* **FastAPI** – High-performance async backend API handling request routing and session management.
+
+### AI Engine & Logic
+* **LangChain** – Application logic framework managing RAG chains, chat history, and prompt engineering.
+* **Ollama** – Local inference server hosting the quantized **Granite 4.0** model for secure, offline reasoning.
+* **Granite Models** – Fine-tuned models utilized for both **Reasoning** (answering questions) and **Embedding** (vectorizing data).
+
+### Retrieval & Storage (RAG)
+* **Docling** – Advanced document parsing engine that preserves PDF structure (headers, tables) during ingestion.
+* **ChromaDB** – Local vector database for storing and querying semantic embeddings of course materials.
+* **Hybrid Retriever** – Combines **BM25** (keyword match) and **Vector Search** (semantic match) to maximize retrieval coverage.
+* **Flashrank** – Cross-encoder reranking model that re-scores retrieved documents to ensure high-precision context is sent to the LLM.
+
+```mermaid
+graph LR
+    %% =========================
+    %% USER & FRONTEND
+    %% =========================
+    User((User))
+    UI[Streamlit UI]:::frontend
+
+    %% =========================
+    %% BACKEND
+    %% =========================
+    API[FastAPI Backend]:::backend
+
+    %% =========================
+    %% INGESTION PIPELINE
+    %% =========================
+    subgraph INGEST["Ingestion Pipeline (Offline / Async)"]
+        Docling["Docling Parser"]:::ingest
+        Split["Chunking / Splitters"]:::ingest
+        EmbedDoc["Embedding Model<br/>(Fine-tuned Granite)"]:::ai
+    end
+
+    %% =========================
+    %% RETRIEVAL PIPELINE
+    %% =========================
+    subgraph RAG["RAG Pipeline (Online / Query-time)"]
+        Rewrite["Query Rewriter"]:::logic
+        EmbedQuery["Query Embedding"]:::ai
+        Hybrid["Hybrid Retriever<br/>(BM25 + Vector)"]:::logic
+        Rerank["Flashrank Reranker"]:::logic
+    end
+
+    %% =========================
+    %% STORAGE & MODELS
+    %% =========================
+    VectorDB[(ChromaDB<br/>Vector Index)]:::database
+    KeywordDB[(BM25 / Keyword Index)]:::database
+    LLM["Ollama Inference<br/>(Granite 4.0 GGUF)"]:::ai
+
+    %% =========================
+    %% USER FLOW
+    %% =========================
+    User -->|Upload PDF| UI
+    User -->|Ask Question| UI
+    UI --> API
+
+    %% =========================
+    %% INGESTION FLOW
+    %% =========================
+    API --> Docling
+    Docling --> Split
+    Split --> EmbedDoc
+    EmbedDoc --> VectorDB
+    Split --> KeywordDB
+
+    %% =========================
+    %% RETRIEVAL FLOW
+    %% =========================
+    API --> Rewrite
+    Rewrite --> EmbedQuery
+    Rewrite --> Hybrid
+
+    EmbedQuery --> VectorDB
+    Hybrid --> VectorDB
+    Hybrid --> KeywordDB
+    Hybrid --> Rerank
+    Rerank --> LLM
+
+    %% =========================
+    %% GENERATION FLOW
+    %% =========================
+    LLM --> API
+
+    %% =========================
+    %% COLOR DEFINITIONS
+    %% =========================
+    classDef frontend fill:#0c2d48,stroke:#00bcd4,stroke-width:2px,color:#ffffff
+    classDef backend fill:#143601,stroke:#76ff03,stroke-width:2px,color:#ffffff
+    classDef ingest fill:#4a3b00,stroke:#ffb300,stroke-width:2px,color:#ffffff
+    classDef logic fill:#1f1f1f,stroke:#9e9e9e,stroke-width:2px,color:#ffffff
+    classDef database fill:#240046,stroke:#e040fb,stroke-width:2px,color:#ffffff
+    classDef ai fill:#3b0000,stroke:#ff5252,stroke-width:2px,color:#ffffff
+```
