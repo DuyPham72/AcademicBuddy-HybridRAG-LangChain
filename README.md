@@ -1,4 +1,4 @@
-# AcademicBuddy: Turn Lecture Notes into an Intelligent Tutor
+# Turn Lecture Notes into an Intelligent Tutor
 **Stop searching, start mastering**. Turn your PDF pile into an intelligent tutor. Ask questions instead of scrolling, and receive precise answers with source citations instantly.
 
 **Offline & Private**. Your data never leaves your laptop. Get instant, clear explanations from your study materials without needing an internet connection or cloud services.
