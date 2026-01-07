@@ -140,4 +140,21 @@ Key Result:
 
 ## Usage
 
+1. Go into project directory
+    ```bash
+   cd .\AcademicBuddy-HybridRAG-LangChain\
+   ```
+2. Open Docker
+   ```bash
+   sudo systemctl start docker
+   ```
+3. Run the script
+   ```bash
+   bash init_model.sh
+   ```
+4. You're all set! Start trying at http://localhost:8501
+
+---
+
+## Demos
 
