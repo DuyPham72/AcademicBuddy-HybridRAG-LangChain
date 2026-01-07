@@ -125,7 +125,7 @@ Key Result:
 * **Ollama** – Local inference server hosting the quantized **Granite 4.0** model for secure, offline reasoning.
 * **Granite Models** – Fine-tuned models utilized for both **Reasoning** and **Embedding**.
 
-### Retrieval & Storage (RAG)
+### Retrieval & Storage
 * **Docling** – Advanced document parsing engine that preserves PDF structure (headers, tables) during ingestion.
 * **ChromaDB** – Local vector database for storing and querying semantic embeddings of course materials.
 * **Hybrid Retriever** – Combines **BM25** (keyword) and **Vector Search** (semantic) to maximize retrieval coverage.
